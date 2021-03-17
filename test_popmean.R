@@ -1,0 +1,66 @@
+
+source("./popmean.R")
+library(testthat)
+
+dat = read.delim(text = "zone	population	year	none	IRS	ITN	IRS+ITN
+                Zone 1	692089	2005	0.41	0.40	0.39	0.40
+                 Zone 1	692089	2006	0.37	0.35	0.35	0.35
+                 Zone 1	692089	2007	0.31	0.29	0.29	0.29
+                 Zone 1	692089	2008	0.28	0.26	0.26	0.26
+                 Zone 1	692089	2009	0.25	0.22	0.23	0.22
+                 Zone 1	692089	2010	0.19	0.17	0.18	0.18
+                 Zone 1	692089	2011	0.15	0.13	0.13	0.14
+                 Zone 1	692089	2012	0.11	0.10	0.10	0.10
+                 Zone 1	692089	2013	0.10	0.09	0.08	0.09
+                 Zone 1	692089	2014	0.12	0.11	0.11	0.12
+                 Zone 1	692089	2015	0.16	0.16	0.16	0.17
+                 Zone 1	692089	2016	0.20	0.21	0.22	0.21
+                 Zone 1	692089	2017	0.24	0.24	0.26	0.25
+                 Zone 1	692089	2018	0.18	0.18	0.18	0.18
+                 Zone 1	692089	2019	0.09	0.09	0.08	0.09
+                 Zone 1	692089	2020	0.09	0.09	0.07	0.07
+                 Zone 1	692089	2021	0.13	0.08	0.08	0.06
+                 Zone 1	692089	2022	0.18	0.07	0.10	0.05
+                 Zone 2	324469	2005	0.26	0.26	0.26	0.26
+                 Zone 2	324469	2006	0.21	0.20	0.20	0.20
+                 Zone 2	324469	2007	0.16	0.15	0.15	0.15
+                 Zone 2	324469	2008	0.12	0.13	0.12	0.12
+                 Zone 2	324469	2009	0.09	0.10	0.09	0.09
+                 Zone 2	324469	2010	0.07	0.07	0.07	0.07
+                 Zone 2	324469	2011	0.04	0.05	0.04	0.04
+                 Zone 2	324469	2012	0.03	0.03	0.03	0.03
+                 Zone 2	324469	2013	0.02	0.03	0.03	0.02
+                 Zone 2	324469	2014	0.03	0.03	0.03	0.03
+                 Zone 2	324469	2015	0.05	0.05	0.05	0.05
+                 Zone 2	324469	2016	0.09	0.09	0.09	0.09
+                 Zone 2	324469	2017	0.11	0.11	0.11	0.11
+                 Zone 2	324469	2018	0.10	0.10	0.10	0.10
+                 Zone 2	324469	2019	0.05	0.05	0.05	0.05
+                 Zone 2	324469	2020	0.05	0.05	0.04	0.04
+                 Zone 2	324469	2021	0.07	0.04	0.04	0.03
+                 Zone 2	324469	2022	0.10	0.03	0.05	0.02", sep = "\t", header = T)
+
+interv_per_year_1interv <- popmean(dat, intervention = "IRS", years = 2020:2022)
+interv_per_year_all_interv <- popmean(dat, intervention = "all", years = 2020:2022)
+
+test_that("output list",{
+  expect_is(interv_per_year_1interv, "list")
+  expect_is(interv_per_year_all_interv, "list")
+})
+
+test_that("single intervention", {
+  expect_equal(interv_per_year_1interv[[1]], 0.07723264)
+  expect_length(interv_per_year_1interv, 3)
+})
+
+test_that("multiple interventions", {
+  expect_length(interv_per_year_all_interv[[1]], 4)
+  expect_equal(as.numeric(interv_per_year_all_interv[[1]][1]), 0.07723264)
+  expect_length(interv_per_year_all_interv, 3)
+})
+
+
+
+
+
+
